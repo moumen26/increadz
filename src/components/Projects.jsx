@@ -1,0 +1,183 @@
+import React, { useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+} from "framer-motion";
+import HeroButton from "./HeroButton";
+
+// --- Project Data ---
+const projects = [
+  {
+    id: 1,
+    title: "Cinematic Vision",
+    category: "Filmmaking",
+    image:
+      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    title: "Urban Architecture",
+    category: "Design",
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    title: "Neon Future",
+    category: "Technology",
+    image:
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+  },
+];
+
+// --- Icons ---
+const ArrowIcon = () => (
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+    <polyline points="12 5 19 12 12 19"></polyline>
+  </svg>
+);
+
+export default function Projects() {
+  const targetRef = useRef(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // 1. Track Scroll Progress
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+  });
+
+  // 2. Horizontal Movement Logic
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-200vw"]);
+
+  // 3. Update Active Slide State based on scroll position
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // latest ranges from 0 to 1
+    // We map roughly: 0-0.33 (Slide 0), 0.33-0.66 (Slide 1), 0.66-1.0 (Slide 2)
+    const newActive = Math.min(
+      Math.floor(latest * projects.length),
+      projects.length - 1
+    );
+    setActiveSlide(newActive);
+  });
+
+  return (
+    <section className="bg-black relative z-20">
+      {/* --- HEADER --- */}
+      <div className="w-full px-6 md:px-12 py-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <motion.h2
+            className="text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase text-white"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            Bringing <br />
+            <span className="font-light text-gray-400">Works to Life</span>
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+          viewport={{ once: true }}
+        >
+          <HeroButton text="All Projects" />
+        </motion.div>
+      </div>
+
+      {/* --- SLIDER CONTAINER (300vh) --- */}
+      <div ref={targetRef} className="relative h-[300vh]">
+        {/* --- STICKY VIEWPORT (100vh) --- */}
+        <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
+          {/* Slider Track */}
+          <div className="flex-1 relative w-full">
+            <motion.div style={{ x }} className="flex w-[300vw] h-full">
+              {projects.map((project, index) => (
+                <div
+                  key={project.id}
+                  className="w-screen h-screen relative flex items-center justify-center"
+                >
+                  {/* Card */}
+                  <div className="relative w-full h-full overflow-hidden group border border-white/10">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+
+                    <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
+                      <div className="flex justify-between items-start pt-4">
+                        <span className="text-white/60 text-xl font-mono backdrop-blur-sm bg-black/20 px-2 rounded">
+                          0{index + 1}
+                        </span>
+                      </div>
+
+                      {/* Padded bottom to make room for the big indicator bars */}
+                      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-24">
+                        <div>
+                          <span className="text-cyan-400 text-sm uppercase tracking-wider font-bold mb-2 block">
+                            {project.category}
+                          </span>
+                          <h3 className="text-4xl md:text-6xl font-semibold text-white">
+                            {project.title}
+                          </h3>
+                        </div>
+                        <div className="text-white/80 text-sm tracking-widest uppercase border border-white/20 px-4 py-2 rounded-full backdrop-blur-md hover:bg-white/10 transition-colors cursor-pointer">
+                          Explore Success Stories
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* --- INDICATOR BARS (Like the image) --- */}
+          {/* Positioned absolutely at the bottom, spanning width */}
+          <div className="absolute bottom-12 left-6 right-6 md:left-12 md:right-12 z-50 flex gap-4">
+            {projects.map((_, index) => (
+              <div
+                key={index}
+                className="relative h-[2px] flex-1 bg-white/20 overflow-hidden"
+              >
+                {/* 
+                   The Active Bar:
+                   If activeSlide === index, width is 100%, opacity 1 (White).
+                   If not, width is 0 or opacity is low.
+                */}
+                <div
+                  className={`absolute inset-0 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-all duration-500 ease-out ${
+                    activeSlide >= index
+                      ? "w-full opacity-100"
+                      : "w-0 opacity-0"
+                  }`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
