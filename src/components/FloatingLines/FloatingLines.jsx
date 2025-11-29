@@ -115,9 +115,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     mouseUv.y *= -1.0;
   }
   
-  // Helper macro to blend lines
-  // We use mix() to support both Light (White bg) and Dark (Black bg) modes
-  #define DRAW_WAVE(count, dist, pos, extra_width) \
+  // --- UPDATED MACRO WITH OPACITY ---
+  #define DRAW_WAVE(count, dist, pos, extra_width, opacity) \
     for (int i = 0; i < count; ++i) { \
       float fi = float(i); \
       float t = fi / max(float(count - 1), 1.0); \
@@ -132,21 +131,25 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         mouseUv, \
         interactive \
       ); \
-      /* Mix the line color on top of the existing color based on wave intensity */ \
-      /* Clamp w to prevent artifacts */ \
-      col = mix(col, lineCol, clamp(w, 0.0, 1.0)); \
+      /* Multiply mix factor by opacity */ \
+      col = mix(col, lineCol, clamp(w, 0.0, 1.0) * opacity); \
     }
 
+  // --- APPLYING SPECIFIC OPACITIES ---
+  
+  // Bottom Wave: 30% Opacity
   if (enableBottom) {
-    DRAW_WAVE(bottomLineCount, bottomLineDistance, bottomWavePosition, 1.5);
+    DRAW_WAVE(bottomLineCount, bottomLineDistance, bottomWavePosition, 1.5, 0.2);
   }
 
+  // Middle Wave: 70% Opacity
   if (enableMiddle) {
-    DRAW_WAVE(middleLineCount, middleLineDistance, middleWavePosition, 2.0);
+    DRAW_WAVE(middleLineCount, middleLineDistance, middleWavePosition, 2.0, 0.4);
   }
 
+  // Top Wave: 100% Opacity
   if (enableTop) {
-    DRAW_WAVE(topLineCount, topLineDistance, topWavePosition, 1.0);
+    DRAW_WAVE(topLineCount, topLineDistance, topWavePosition, 1.0, 0.7);
   }
 
   fragColor = vec4(col, 1.0);
@@ -195,7 +198,7 @@ export default function FloatingLines({
   mouseDamping = 0.05,
   parallax = true,
   parallaxStrength = 0.2,
-  mixBlendMode = "normal", // Changed default to normal since shader handles blending
+  mixBlendMode = "normal",
   backgroundColor = "#000000",
 }) {
   const containerRef = useRef(null);
@@ -206,7 +209,6 @@ export default function FloatingLines({
   const targetParallaxRef = useRef(new Vector2(0, 0));
   const currentParallaxRef = useRef(new Vector2(0, 0));
 
-  // Helper functions to normalize props
   const getLineCount = (waveType) => {
     if (typeof lineCount === "number") return lineCount;
     if (!enabledWaves.includes(waveType)) return 0;
@@ -232,6 +234,8 @@ export default function FloatingLines({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
+
+    renderer.setClearColor(0x000000, 0);
     containerRef.current.appendChild(renderer.domElement);
 
     const uniforms = {
@@ -239,12 +243,10 @@ export default function FloatingLines({
       iResolution: { value: new Vector3(1, 1, 1) },
       animationSpeed: { value: animationSpeed },
 
-      // Wave toggles
       enableTop: { value: enabledWaves.includes("top") },
       enableMiddle: { value: enabledWaves.includes("middle") },
       enableBottom: { value: enabledWaves.includes("bottom") },
 
-      // Counts
       topLineCount: {
         value: enabledWaves.includes("top") ? getLineCount("top") : 0,
       },
@@ -255,7 +257,6 @@ export default function FloatingLines({
         value: enabledWaves.includes("bottom") ? getLineCount("bottom") : 0,
       },
 
-      // Distances
       topLineDistance: {
         value:
           (enabledWaves.includes("top") ? getLineDistance("top") : 0) * 0.01,
@@ -271,7 +272,6 @@ export default function FloatingLines({
           0.01,
       },
 
-      // Positions
       topWavePosition: {
         value: new Vector3(
           topWavePosition?.x ?? 10.0,
@@ -294,19 +294,16 @@ export default function FloatingLines({
         ),
       },
 
-      // Interaction
       iMouse: { value: new Vector2(-1000, -1000) },
       interactive: { value: interactive },
       bendRadius: { value: bendRadius },
       bendStrength: { value: bendStrength },
       bendInfluence: { value: 0 },
 
-      // Parallax
       parallax: { value: parallax },
       parallaxStrength: { value: parallaxStrength },
       parallaxOffset: { value: new Vector2(0, 0) },
 
-      // Colors
       lineGradient: {
         value: Array.from(
           { length: MAX_GRADIENT_STOPS },
@@ -317,7 +314,6 @@ export default function FloatingLines({
       backgroundColor: { value: hexToVec3(backgroundColor) },
     };
 
-    // Initialize Gradients
     if (linesGradient && linesGradient.length > 0) {
       const stops = linesGradient.slice(0, MAX_GRADIENT_STOPS);
       uniforms.lineGradientCount.value = stops.length;
