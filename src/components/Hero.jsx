@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion"; // Import motion
 import HeroButton from "./HeroButton";
+import { useTheme } from "../context/ThemeContext";
 
 // Animation Variants
 const containerVariants = {
@@ -28,6 +29,8 @@ const itemVariants = {
 };
 
 export default function Hero() {
+  const { theme } = useTheme();
+
   return (
     <main className="flex-1 flex items-center justify-center pointer-events-auto md:pt-[70px]">
       {/* Turn div into motion.div and apply variants */}
@@ -41,7 +44,9 @@ export default function Hero() {
           {/* Line 1 */}
           <motion.span
             variants={itemVariants}
-            className="block text-white font-light"
+            className={`block font-light transition-colors duration-500 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
           >
             Your Vision Is
           </motion.span>
@@ -58,7 +63,9 @@ export default function Hero() {
         {/* Subtitle */}
         <motion.p
           variants={itemVariants}
-          className="mt-6 mb-10 text-gray-400 text-lg md:text-xl max-w-lg font-light"
+          className={`mt-6 mb-10 text-lg md:text-xl max-w-lg font-light transition-colors duration-500 ${
+            theme === "dark" ? "text-gray-400" : "text-gray-600"
+          }`}
         >
           We're here to create bold digital solutions that convert.
         </motion.p>

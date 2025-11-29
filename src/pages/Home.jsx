@@ -10,10 +10,17 @@ import Process from "../components/Process";
 import Testimonials from "../components/Testimonials";
 import Contact from "../components/Contact";
 import Footer from "../components/footer";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Home() {
+  const { theme } = useTheme();
+
   return (
-    <div className="relative w-full min-h-screen bg-black text-white font-sans selection:bg-cyan-400 selection:text-black">
+    <div
+      className={`relative w-full min-h-screen font-sans selection:bg-cyan-400 selection:text-black transition-colors duration-500 ${
+        theme === "dark" ? "bg-black text-white" : "bg-white text-gray-900"
+      }`}
+    >
       <Navbar />
 
       <motion.div
@@ -24,13 +31,20 @@ export default function Home() {
       >
         <FloatingLines
           enabledWaves={["top", "middle", "bottom"]}
-          lineCount={[10, 5, 10]}
+          lineCount={[5, 5, 5]}
           lineDistance={[8, 6, 4]}
           bendRadius={5.0}
           bendStrength={-0.5}
           interactive={true}
           parallax={true}
-          linesGradient={["#0504aa", "#00ccff", "#000000"]}
+          // UPDATED: Darker colors for light mode so they show up on white
+          linesGradient={
+            theme === "dark"
+              ? ["#0504aa", "#00ccff", "#000000"]
+              : ["#1e3a8a", "#0ea5e9", "#ffffff"]
+          }
+          backgroundColor={theme === "dark" ? "#000000" : "#ffffff"}
+          mixBlendMode="normal" // Let the shader handle the background
         />
       </motion.div>
       <div className="relative w-full h-screen">

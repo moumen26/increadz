@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "./AnimatedButton"; // Reuse your existing button
+import { useTheme } from "../context/ThemeContext";
 
 // --- Icons ---
 const ArrowDown = () => (
@@ -27,7 +28,7 @@ const options = [
   { value: "other", label: "Other" },
 ];
 
-const CustomSelect = () => {
+const CustomSelect = ({ theme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -55,9 +56,14 @@ const CustomSelect = () => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-transparent border-b border-white/20 py-4 text-left text-lg focus:outline-none focus:border-cyan-400 transition-colors appearance-none cursor-pointer flex items-center justify-between"
+        className={`w-full bg-transparent py-4 text-left text-lg focus:outline-none focus:border-cyan-400 transition-colors appearance-none cursor-pointer flex items-center justify-between border-b ${
+          theme === "dark" ? "border-white/20" : "border-gray-300"
+        }`}
       >
-        <span className={selectedOption ? "text-white" : "text-gray-500"}>
+        <span className={selectedOption
+          ? theme === "dark" ? "text-white" : "text-gray-900"
+          : "text-gray-500"
+        }>
           {selectedOption ? selectedOption.label : "Select an option"}
         </span>
         <motion.div
@@ -82,7 +88,11 @@ const CustomSelect = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 bg-[#0a0a0a] border border-white/10 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl"
+            className={`absolute z-50 w-full mt-2 rounded-xl shadow-2xl overflow-hidden backdrop-blur-xl ${
+              theme === "dark"
+                ? "bg-[#0a0a0a] border border-white/10"
+                : "bg-white border border-gray-200"
+            }`}
           >
             <div className="max-h-64 overflow-y-auto custom-scrollbar">
               {options.map((option, index) => (
@@ -93,7 +103,11 @@ const CustomSelect = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.2, delay: index * 0.05 }}
-                  className="w-full text-left px-6 py-3 text-white hover:bg-cyan-400/10 transition-colors border-b border-white/5 last:border-b-0 flex items-center justify-between group"
+                  className={`w-full text-left px-6 py-3 hover:bg-cyan-400/10 transition-colors last:border-b-0 flex items-center justify-between group border-b ${
+                    theme === "dark"
+                      ? "text-white border-white/5"
+                      : "text-gray-900 border-gray-100"
+                  }`}
                 >
                   <span className="group-hover:text-cyan-400 transition-colors">
                     {option.label}
@@ -126,9 +140,13 @@ const CustomSelect = () => {
 };
 
 export default function Contact() {
+  const { theme } = useTheme();
+
   return (
     <section
-      className="bg-black relative py-24 md:py-32 overflow-hidden"
+      className={`relative py-24 md:py-32 overflow-hidden transition-colors duration-500 ${
+        theme === "dark" ? "bg-black" : "bg-gray-50"
+      }`}
       id="contact"
     >
       {/* Optional Background Glow */}
@@ -145,7 +163,9 @@ export default function Contact() {
               viewport={{ once: true, margin: "-100px" }}
               className="text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase mb-8"
             >
-              <span className="block text-white font-light">Let's Start</span>
+              <span className={`block font-light transition-colors duration-500 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}>Let's Start</span>
               <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
                 A Project
               </span>
@@ -156,7 +176,9 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-gray-400 text-lg leading-relaxed max-w-md"
+              className={`text-lg leading-relaxed max-w-md transition-colors duration-500 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
             >
               Reach out to us, and we'll get back to you as soon as possible.
               We're here to help you take the next step toward success.
@@ -177,7 +199,11 @@ export default function Contact() {
                   type="text"
                   id="name"
                   placeholder=" "
-                  className="peer w-full bg-transparent border-b border-white/20 py-4 text-white text-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                  className={`peer w-full bg-transparent py-4 text-lg focus:outline-none focus:border-cyan-400 transition-colors border-b ${
+                    theme === "dark"
+                      ? "border-white/20 text-white"
+                      : "border-gray-300 text-gray-900"
+                  }`}
                 />
                 <label
                   htmlFor="name"
@@ -198,7 +224,11 @@ export default function Contact() {
                   type="email"
                   id="email"
                   placeholder=" "
-                  className="peer w-full bg-transparent border-b border-white/20 py-4 text-white text-lg focus:outline-none focus:border-cyan-400 transition-colors"
+                  className={`peer w-full bg-transparent py-4 text-lg focus:outline-none focus:border-cyan-400 transition-colors border-b ${
+                    theme === "dark"
+                      ? "border-white/20 text-white"
+                      : "border-gray-300 text-gray-900"
+                  }`}
                 />
                 <label
                   htmlFor="email"
@@ -214,7 +244,7 @@ export default function Contact() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                <CustomSelect />
+                <CustomSelect theme={theme} />
               </motion.div>
 
               {/* Message Input */}
@@ -228,7 +258,11 @@ export default function Contact() {
                   id="message"
                   rows="1"
                   placeholder=" "
-                  className="peer w-full bg-transparent border-b border-white/20 py-4 text-white text-lg focus:outline-none focus:border-cyan-400 transition-colors resize-none"
+                  className={`peer w-full bg-transparent py-4 text-lg focus:outline-none focus:border-cyan-400 transition-colors resize-none border-b ${
+                    theme === "dark"
+                      ? "border-white/20 text-white"
+                      : "border-gray-300 text-gray-900"
+                  }`}
                 ></textarea>
                 <label
                   htmlFor="message"

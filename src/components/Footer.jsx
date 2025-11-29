@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "../context/ThemeContext";
 
 // --- Icons ---
 const InstagramIcon = () => (
@@ -70,9 +71,14 @@ const ArrowUpRight = () => (
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { theme } = useTheme();
 
   return (
-    <footer className="bg-black relative pt-20 pb-10 overflow-hidden border-t border-white/10">
+    <footer className={`relative pt-20 pb-10 overflow-hidden transition-colors duration-500 border-t ${
+      theme === "dark"
+        ? "bg-black border-white/10"
+        : "bg-gray-50 border-gray-200"
+    }`}>
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         {/* --- Top Section: Main Content --- */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-20">
@@ -82,7 +88,9 @@ export default function Footer() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-3xl font-bold text-white tracking-tight mb-6"
+              className={`text-3xl font-bold tracking-tight mb-6 transition-colors duration-500 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
             >
               increadz.
             </motion.h2>
@@ -90,7 +98,9 @@ export default function Footer() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-gray-400 max-w-sm text-lg"
+              className={`max-w-sm text-lg transition-colors duration-500 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
             >
               We build digital experiences that blend strategy, design, and
               technology.
@@ -105,10 +115,14 @@ export default function Footer() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="group flex items-center gap-4 text-2xl md:text-4xl font-light text-white hover:text-cyan-400 transition-colors"
+              className={`group flex items-center gap-4 text-2xl md:text-4xl font-light hover:text-cyan-400 transition-colors ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
             >
               contact@increadz.com
-              <div className="p-2 rounded-full border border-white/20 group-hover:bg-cyan-400 group-hover:border-cyan-400 group-hover:text-black transition-all duration-300">
+              <div className={`p-2 rounded-full group-hover:bg-cyan-400 group-hover:border-cyan-400 group-hover:text-black transition-all duration-300 border ${
+                theme === "dark" ? "border-white/20" : "border-gray-300"
+              }`}>
                 <ArrowUpRight />
               </div>
             </motion.a>
@@ -122,19 +136,31 @@ export default function Footer() {
             >
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+                className={`transition-colors p-2 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white hover:bg-white/10"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                }`}
               >
                 <InstagramIcon />
               </a>
               <a
                 href="#"
-                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+                className={`transition-colors p-2 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white hover:bg-white/10"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                }`}
               >
                 <LinkedinIcon />
               </a>
               <a
                 href="mailto:hello@increadz.com"
-                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full"
+                className={`transition-colors p-2 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white hover:bg-white/10"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                }`}
               >
                 <MailIcon />
               </a>
@@ -147,7 +173,11 @@ export default function Footer() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500"
+          className={`pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm border-t ${
+            theme === "dark"
+              ? "border-white/10 text-gray-500"
+              : "border-gray-200 text-gray-600"
+          }`}
         >
           <p>&copy; {currentYear} Increadz. All rights reserved.</p>
 

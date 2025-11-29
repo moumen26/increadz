@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 // Inline SVG for the Arrow
 const ArrowRight = () => (
@@ -18,18 +19,20 @@ const ArrowRight = () => (
 );
 
 export default function HeroButton({ text = "Let's Contact" }) {
+  const { theme } = useTheme();
+
   return (
     <button
-      className="
-        relative group 
-        flex items-center gap-3 
-        bg-white text-black 
-        px-8 py-3 rounded-full 
-        font-semibold text-lg 
-        overflow-hidden 
-        transition-transform duration-300 
+      className={`
+        relative group
+        flex items-center gap-3
+        px-8 py-3 rounded-full
+        font-semibold text-lg
+        overflow-hidden
+        transition-all duration-300
         hover:scale-105 active:scale-95
-      "
+        ${theme === "dark" ? "bg-white text-black" : "bg-gray-900 text-white"}
+      `}
     >
       {/* --- Background Animation (The "Before" Effect) --- */}
       {/* Starts as w-0 h-0 in center, expands to fill button on hover */}
@@ -60,7 +63,9 @@ export default function HeroButton({ text = "Let's Contact" }) {
         </div>
 
         {/* Arrow Icon: Rotates 45deg on hover */}
-        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white transition-transform duration-500 group-hover:rotate-45">
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 ${
+          theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+        }`}>
           <ArrowRight />
         </div>
       </div>

@@ -6,6 +6,7 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import HeroButton from "./HeroButton";
+import { useTheme } from "../context/ThemeContext";
 
 // --- Project Data ---
 const projects = [
@@ -52,6 +53,7 @@ const ArrowIcon = () => (
 export default function Projects() {
   const targetRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const { theme } = useTheme();
 
   // 1. Track Scroll Progress
   const { scrollYProgress } = useScroll({
@@ -73,7 +75,9 @@ export default function Projects() {
   });
 
   return (
-    <section className="bg-black relative z-20">
+    <section className={`relative z-20 transition-colors duration-500 ${
+      theme === "dark" ? "bg-black" : "bg-gray-50"
+    }`}>
       {/* --- HEADER --- */}
       <div className="w-full px-6 md:px-12 py-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <motion.div
@@ -83,14 +87,18 @@ export default function Projects() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <motion.h2
-            className="text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase text-white"
+            className={`text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase transition-colors duration-500 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
             viewport={{ once: true }}
           >
             Bringing <br />
-            <span className="font-light text-gray-400">Works to Life</span>
+            <span className={`font-light transition-colors duration-500 ${
+              theme === "dark" ? "text-gray-400" : "text-gray-600"
+            }`}>Works to Life</span>
           </motion.h2>
         </motion.div>
 
@@ -117,17 +125,25 @@ export default function Projects() {
                   className="w-screen h-screen relative flex items-center justify-center"
                 >
                   {/* Card */}
-                  <div className="relative w-full h-full overflow-hidden group border border-white/10">
+                  <div className={`relative w-full h-full overflow-hidden group ${
+                    theme === "dark" ? "border border-white/10" : "border border-gray-300"
+                  }`}>
                     <img
                       src={project.image}
                       alt={project.title}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div className={`absolute inset-0 ${
+                      theme === "dark"
+                        ? "bg-gradient-to-t from-black/90 via-black/20 to-transparent"
+                        : "bg-gradient-to-t from-white/90 via-white/20 to-transparent"
+                    }`}></div>
 
                     <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
                       <div className="flex justify-between items-start pt-4">
-                        <span className="text-white/60 text-xl font-mono backdrop-blur-sm bg-black/20 px-2 rounded">
+                        <span className={`text-xl font-mono backdrop-blur-sm px-2 rounded ${
+                          theme === "dark" ? "text-white/60 bg-black/20" : "text-gray-600 bg-white/20"
+                        }`}>
                           0{index + 1}
                         </span>
                       </div>
@@ -138,11 +154,17 @@ export default function Projects() {
                           <span className="text-cyan-400 text-sm uppercase tracking-wider font-bold mb-2 block">
                             {project.category}
                           </span>
-                          <h3 className="text-4xl md:text-6xl font-semibold text-white">
+                          <h3 className={`text-4xl md:text-6xl font-semibold ${
+                            theme === "dark" ? "text-white" : "text-gray-900"
+                          }`}>
                             {project.title}
                           </h3>
                         </div>
-                        <div className="text-white/80 text-sm tracking-widest uppercase border border-white/20 px-4 py-2 rounded-full backdrop-blur-md hover:bg-white/10 transition-colors cursor-pointer">
+                        <div className={`text-sm tracking-widest uppercase px-4 py-2 rounded-full backdrop-blur-md transition-colors cursor-pointer ${
+                          theme === "dark"
+                            ? "text-white/80 border border-white/20 hover:bg-white/10"
+                            : "text-gray-700 border border-gray-300 hover:bg-gray-100"
+                        }`}>
                           Explore Success Stories
                         </div>
                       </div>
@@ -159,15 +181,21 @@ export default function Projects() {
             {projects.map((_, index) => (
               <div
                 key={index}
-                className="relative h-[2px] flex-1 bg-white/20 overflow-hidden"
+                className={`relative h-[2px] flex-1 overflow-hidden ${
+                  theme === "dark" ? "bg-white/20" : "bg-gray-400/40"
+                }`}
               >
-                {/* 
+                {/*
                    The Active Bar:
-                   If activeSlide === index, width is 100%, opacity 1 (White).
+                   If activeSlide === index, width is 100%, opacity 1.
                    If not, width is 0 or opacity is low.
                 */}
                 <div
-                  className={`absolute inset-0 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-all duration-500 ease-out ${
+                  className={`absolute inset-0 transition-all duration-500 ease-out ${
+                    theme === "dark"
+                      ? "bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                      : "bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"
+                  } ${
                     activeSlide >= index
                       ? "w-full opacity-100"
                       : "w-0 opacity-0"

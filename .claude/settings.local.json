@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dir /s c:Projectsincreadzsrc)",
       "Bash(dir:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(move /Y srccomponentsAboutLight.jsx srccomponentsAbout.jsx)"
     ],
     "deny": [],
     "ask": []

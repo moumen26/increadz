@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "../context/ThemeContext";
 
 // --- Data ---
 const testimonials = [
@@ -38,10 +39,14 @@ const testimonials = [
 ];
 
 // Placeholder Logos (Just simple SVG shapes to mimic the image)
-const LogoPlaceholder = ({ label }) => (
+const LogoPlaceholder = ({ label, theme }) => (
   <div className="flex items-center justify-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300">
-    <div className="w-6 h-6 bg-white/20 rounded-full"></div>
-    <span className="text-white font-bold tracking-widest uppercase">
+    <div className={`w-6 h-6 rounded-full ${
+      theme === "dark" ? "bg-white/20" : "bg-gray-400/30"
+    }`}></div>
+    <span className={`font-bold tracking-widest uppercase transition-colors duration-500 ${
+      theme === "dark" ? "text-white" : "text-gray-900"
+    }`}>
       {label}
     </span>
   </div>
@@ -97,6 +102,7 @@ const ArrowRight = () => (
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { theme } = useTheme();
 
   // Logic to handle "Next" (Cycles through 1 by 1, loops back)
   const handleNext = () => {
@@ -122,7 +128,9 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="bg-black relative py-24 md:py-32 overflow-hidden">
+    <section className={`relative py-24 md:py-32 overflow-hidden transition-colors duration-500 ${
+      theme === "dark" ? "bg-black" : "bg-gray-50"
+    }`}>
       <div className="container mx-auto px-6 md:px-12">
         {/* --- Header --- */}
         <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-16">
@@ -133,7 +141,9 @@ export default function Testimonials() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <span className="block text-white font-light">What Our</span>
+            <span className={`block font-light transition-colors duration-500 ${
+              theme === "dark" ? "text-white" : "text-gray-900"
+            }`}>What Our</span>
             <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
               Clients Say
             </span>
@@ -149,13 +159,21 @@ export default function Testimonials() {
           >
             <button
               onClick={handlePrev}
-              className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
+              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
+                theme === "dark"
+                  ? "border border-white/10 text-white hover:bg-white hover:text-black"
+                  : "border border-gray-300 text-gray-900 hover:bg-gray-900 hover:text-white"
+              }`}
             >
               <ArrowLeft />
             </button>
             <button
               onClick={handleNext}
-              className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
+              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 ${
+                theme === "dark"
+                  ? "border border-white/10 text-white hover:bg-white hover:text-black"
+                  : "border border-gray-300 text-gray-900 hover:bg-gray-900 hover:text-white"
+              }`}
             >
               <ArrowRight />
             </button>
@@ -172,22 +190,32 @@ export default function Testimonials() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="bg-[#0a0a0a] border border-white/5 p-10 rounded-2xl flex flex-col justify-between min-h-[350px] hover:border-white/10 transition-colors"
+                className={`p-10 rounded-2xl flex flex-col justify-between min-h-[350px] transition-colors ${
+                  theme === "dark"
+                    ? "bg-[#0a0a0a] border border-white/5 hover:border-white/10"
+                    : "bg-white border border-gray-200 hover:border-gray-300"
+                }`}
               >
                 <div>
                   <span className="text-cyan-400 font-mono text-sm mb-6 block">
                     {item.number}
                   </span>
-                  <p className="text-xl text-gray-200 leading-relaxed">
+                  <p className={`text-xl leading-relaxed transition-colors duration-500 ${
+                    theme === "dark" ? "text-gray-200" : "text-gray-700"
+                  }`}>
                     "{item.quote}"
                   </p>
                 </div>
 
                 <div className="mt-8">
-                  <h4 className="text-white font-semibold text-lg">
+                  <h4 className={`font-semibold text-lg transition-colors duration-500 ${
+                    theme === "dark" ? "text-white" : "text-gray-900"
+                  }`}>
                     {item.name}
                   </h4>
-                  <p className="text-gray-500 text-sm">{item.role}</p>
+                  <p className={`text-sm transition-colors duration-500 ${
+                    theme === "dark" ? "text-gray-500" : "text-gray-600"
+                  }`}>{item.role}</p>
                 </div>
               </motion.div>
             ))}
@@ -203,9 +231,13 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: idx * 0.05 }}
               viewport={{ once: true }}
-              className="bg-[#0a0a0a] border border-white/5 h-32 rounded-xl flex items-center justify-center hover:bg-[#111] transition-colors cursor-pointer group"
+              className={`h-32 rounded-xl flex items-center justify-center transition-colors cursor-pointer group ${
+                theme === "dark"
+                  ? "bg-[#0a0a0a] border border-white/5 hover:bg-[#111]"
+                  : "bg-white border border-gray-200 hover:bg-gray-50"
+              }`}
             >
-              <LogoPlaceholder label={logoName} />
+              <LogoPlaceholder label={logoName} theme={theme} />
             </motion.div>
           ))}
         </div>
