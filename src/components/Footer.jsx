@@ -74,11 +74,13 @@ export default function Footer() {
   const { theme } = useTheme();
 
   return (
-    <footer className={`relative pt-20 pb-10 overflow-hidden transition-colors duration-500 border-t ${
-      theme === "dark"
-        ? "bg-black border-white/10"
-        : "bg-gray-50 border-gray-200"
-    }`}>
+    <footer
+      className={`relative pt-20 pb-10 overflow-hidden transition-colors duration-500 border-t ${
+        theme === "dark"
+          ? "bg-black border-white/10"
+          : "bg-gray-50 border-gray-200"
+      }`}
+    >
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         {/* --- Top Section: Main Content --- */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-20">
@@ -120,9 +122,11 @@ export default function Footer() {
               }`}
             >
               contact@increadz.com
-              <div className={`p-2 rounded-full group-hover:bg-cyan-400 group-hover:border-cyan-400 group-hover:text-black transition-all duration-300 border ${
-                theme === "dark" ? "border-white/20" : "border-gray-300"
-              }`}>
+              <div
+                className={`p-2 rounded-full group-hover:bg-cyan-400 group-hover:border-cyan-400 group-hover:text-black transition-all duration-300 border ${
+                  theme === "dark" ? "border-white/20" : "border-gray-300"
+                }`}
+              >
                 <ArrowUpRight />
               </div>
             </motion.a>
