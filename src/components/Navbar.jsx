@@ -36,6 +36,7 @@ const MobileNavLink = ({ href, label, index, active, onClick, theme }) => {
 export default function Navbar() {
   const [active, setActive] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -45,6 +46,14 @@ export default function Navbar() {
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Lock body scroll when menu is open
@@ -65,9 +74,13 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 md:px-12 pointer-events-auto backdrop-blur-md md:backdrop-blur-none transition-colors duration-500 ${
           theme === "dark"
-            ? "bg-black/80 md:bg-transparent"
-            : "bg-white/80 md:bg-transparent"
-        }`}
+            ? scrolled
+              ? "bg-black/80"
+              : "bg-transparent"
+            : scrolled
+            ? "bg-white/80"
+            : "bg-transparent"
+        } md:bg-transparent`}
       >
         <span
           className={`relative z-50 text-2xl font-semibold tracking-tight transition-colors duration-500 ${
