@@ -5,12 +5,13 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Services from "../components/Services";
 import Projects from "../components/Projects";
-import About from "../components/About";
+import Paths from "../components/Paths";
 import Process from "../components/Process";
 import Testimonials from "../components/Testimonials";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import { useTheme } from "../context/ThemeContext";
+import About from "../components/About";
 
 export default function Home() {
   const { theme } = useTheme();
@@ -22,7 +23,6 @@ export default function Home() {
       }`}
     >
       <Navbar />
-
       <motion.div
         className="fixed inset-0 z-0"
         initial={{ opacity: 0 }}
@@ -52,30 +52,24 @@ export default function Home() {
           <Hero />
         </div>
       </div>
-
+      <div className="relative z-10 min-h-screen">
+        <About />
+      </div>{" "}
       <div className="relative z-10 min-h-screen">
         <Services />
       </div>
-
       <div className="relative z-10 min-h-screen">
-        <Projects />
+        <Paths />
       </div>
-      <div className="relative z-10 min-h-screen">
-        <About />
-      </div>
-
       <div className="relative z-10 min-h-screen">
         <Process />
       </div>
-
       <div className="relative z-10 min-h-screen">
         <Testimonials />
       </div>
-
       <div className="relative z-10 min-h-screen">
         <Contact />
       </div>
-
       <div className="relative z-20">
         <Footer />
       </div>

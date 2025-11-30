@@ -119,7 +119,7 @@ export default function Navbar() {
               </span>
             </div>
           </a>
-          {["About", "Projects", "Pricing", "Blog"].map((item) => (
+          {["About", "Services", "Process", "Contact"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
@@ -270,26 +270,26 @@ export default function Navbar() {
                 theme={theme}
               />
               <MobileNavLink
-                href="#projects"
-                label="Projects"
+                href="#services"
+                label="Services"
                 index={2}
-                active={active === "projects"}
+                active={active === "services"}
                 onClick={() => setMobileMenuOpen(false)}
                 theme={theme}
               />
               <MobileNavLink
-                href="#pricing"
-                label="Pricing"
+                href="#process"
+                label="Process"
                 index={3}
-                active={active === "pricing"}
+                active={active === "process"}
                 onClick={() => setMobileMenuOpen(false)}
                 theme={theme}
               />
               <MobileNavLink
-                href="#blog"
-                label="Blog"
+                href="#contact"
+                label="Contact"
                 index={4}
-                active={active === "blog"}
+                active={active === "contact"}
                 onClick={() => setMobileMenuOpen(false)}
                 theme={theme}
               />
