@@ -1,11 +1,5 @@
-import React, { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-} from "framer-motion";
-import HeroButton from "./HeroButton";
+import React from "react";
+import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 
 // --- Service Data ---
@@ -39,171 +33,215 @@ const services = [
   },
 ];
 
+// --- Icons ---
+const ArrowRight = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="5" y1="12" x2="19" y2="12"></line>
+    <polyline points="12 5 19 12 12 19"></polyline>
+  </svg>
+);
+
+// --- Service Card Component ---
+const ServiceCard = ({ service, index, theme }) => {
+  const formattedIndex = `0${index + 1}`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      viewport={{ amount: 0.3, margin: "0px" }}
+      className={`group relative flex flex-col justify-between p-8 md:p-10 rounded-3xl overflow-hidden backdrop-blur-md transition-colors duration-500 ${
+        theme === "dark"
+          ? "bg-[#0a0a0a]/80 border border-white/5"
+          : "bg-white/80 border border-gray-200"
+      }`}
+    >
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-700">
+        <img
+          src={service.image}
+          alt={service.title}
+          className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
+        />
+      </div>
+
+      {/* Gradient Hover Effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"></div>
+
+      {/* Large Background Index */}
+      <div className="absolute top-4 right-6 pointer-events-none">
+        <span
+          className={`text-8xl font-bold transition-colors duration-500 ${
+            theme === "dark"
+              ? "text-white/5 group-hover:text-cyan-500/10"
+              : "text-gray-900/5 group-hover:text-cyan-500/10"
+          }`}
+        >
+          {formattedIndex}
+        </span>
+      </div>
+
+      {/* Content Container */}
+      <div className="relative z-10 flex flex-col gap-6">
+        <div>
+          {/* Category Label Pill */}
+          <span
+            className={`inline-block px-3 py-1 rounded-full text-[10px] uppercase tracking-wider text-cyan-400 mb-4 ${
+              theme === "dark"
+                ? "bg-white/5 border border-white/10"
+                : "bg-cyan-50 border border-cyan-200"
+            }`}
+          >
+            {service.category}
+          </span>
+          <h3
+            className={`text-3xl font-medium transition-colors duration-300 ${
+              theme === "dark"
+                ? "text-white group-hover:text-cyan-50"
+                : "text-gray-900 group-hover:text-cyan-600"
+            }`}
+          >
+            {service.title}
+          </h3>
+        </div>
+
+        <p
+          className={`text-base leading-relaxed max-w-md transition-colors duration-300 ${
+            theme === "dark"
+              ? "text-gray-400 group-hover:text-gray-300"
+              : "text-gray-600 group-hover:text-gray-700"
+          }`}
+        >
+          {service.description}
+        </p>
+
+        {/* Action Area */}
+        <div className="pt-4 flex items-center gap-4 text-sm font-semibold">
+          <div
+            className={`w-full h-[1px] transition-colors duration-500 ${
+              theme === "dark"
+                ? "bg-white/10 group-hover:bg-cyan-500/50"
+                : "bg-gray-200 group-hover:bg-cyan-400/50"
+            }`}
+          ></div>
+          <div
+            className={`relative w-8 h-8 shrink-0 rounded-full flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-cyan-400 group-hover:bg-cyan-400 group-hover:scale-110 ${
+              theme === "dark"
+                ? "border border-white/20"
+                : "border border-gray-300"
+            }`}
+          >
+            <div
+              className={`transition-transform duration-300 group-hover:-rotate-45 ${
+                theme === "dark" ? "text-white" : "text-gray-900"
+              }`}
+            >
+              <ArrowRight />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Progressive Line */}
+      <div
+        className={`absolute bottom-0 left-0 w-full h-[2px] ${
+          theme === "dark" ? "bg-white/5" : "bg-gray-200"
+        }`}
+      >
+        <div className="h-full bg-cyan-400 w-0 group-hover:w-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"></div>
+      </div>
+    </motion.div>
+  );
+};
+
+// --- Main Section Component ---
 export default function Services() {
-  const targetRef = useRef(null);
-  const [activeSlide, setActiveSlide] = useState(0);
   const { theme } = useTheme();
-
-  // 1. Track Scroll Progress
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-  });
-
-  // 2. Horizontal Movement Logic
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-200vw"]);
-
-  // 3. Update Active Slide State based on scroll position
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const newActive = Math.min(
-      Math.floor(latest * services.length),
-      services.length - 1
-    );
-    setActiveSlide(newActive);
-  });
 
   return (
     <section
       id="services"
-      className={`relative z-20 transition-colors duration-500 ${
+      className={`relative w-full transition-colors duration-500 ${
         theme === "dark" ? "bg-black" : "bg-gray-50"
       }`}
     >
-      {/* --- HEADER --- */}
-      <div className="w-full px-6 md:px-12 py-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2
-            className="text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            viewport={{ once: true }}
+      {/* Container */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-12 lg:gap-20">
+          {/* LEFT COLUMN - Sticky Title */}
+          <motion.div
+            className="lg:w-5/12 lg:sticky lg:top-24 lg:self-start shrink-0"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
           >
-            <span
-              className={`block font-light transition-colors duration-500 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
+            {/* The Vertical Cyan Line Decoration */}
+            <div
+              className={`absolute -left-6 top-2 bottom-2 w-[2px] hidden lg:block ${
+                theme === "dark" ? "bg-white/5" : "bg-gray-200"
               }`}
             >
-              Our Best
-            </span>
-            <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
-              Services!
-            </span>
-          </motion.h2>
-        </motion.div>
-      </div>
+              <motion.div
+                className="w-full h-32 bg-cyan-400"
+                initial={{ height: 0 }}
+                whileInView={{ height: 128 }}
+                transition={{ duration: 1, delay: 0.5 }}
+              ></motion.div>
+            </div>
 
-      {/* --- SLIDER CONTAINER (300vh) --- */}
-      <div ref={targetRef} className="relative h-[300vh]">
-        {/* --- STICKY VIEWPORT (100vh) --- */}
-        <div className="sticky top-0 h-screen overflow-hidden flex flex-col">
-          {/* Slider Track */}
-          <div className="flex-1 relative w-full">
-            <motion.div style={{ x }} className="flex w-[300vw] h-full">
-              {services.map((service, index) => (
-                <div
-                  key={service.id}
-                  className="w-screen h-screen relative flex items-center justify-center"
-                >
-                  {/* Card */}
-                  <div
-                    className={`relative w-full h-full overflow-hidden group ${
-                      theme === "dark"
-                        ? "border border-white/10"
-                        : "border border-gray-300"
-                    }`}
-                  >
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    />
-                    <div
-                      className={`absolute inset-0 ${
-                        theme === "dark"
-                          ? "bg-gradient-to-t from-black/90 via-black/20 to-transparent"
-                          : "bg-gradient-to-t from-white/90 via-white/20 to-transparent"
-                      }`}
-                    ></div>
-
-                    <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between">
-                      <div className="flex justify-between items-start pt-4">
-                        <span
-                          className={`text-xl font-mono backdrop-blur-sm px-2 rounded ${
-                            theme === "dark"
-                              ? "text-white/60 bg-black/20"
-                              : "text-gray-600 bg-white/20"
-                          }`}
-                        >
-                          0{index + 1}
-                        </span>
-                      </div>
-
-                      {/* Padded bottom to make room for the indicator bars */}
-                      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-24">
-                        <div>
-                          <span className="text-cyan-400 text-sm uppercase tracking-wider font-bold mb-2 block">
-                            {service.category}
-                          </span>
-                          <h3
-                            className={`text-4xl md:text-6xl font-semibold ${
-                              theme === "dark" ? "text-white" : "text-gray-900"
-                            }`}
-                          >
-                            {service.title}
-                          </h3>
-                          <p
-                            className={`mt-4 text-base md:text-lg max-w-2xl ${
-                              theme === "dark"
-                                ? "text-gray-300"
-                                : "text-gray-700"
-                            }`}
-                          >
-                            {service.description}
-                          </p>
-                        </div>
-                        <div
-                          className={`text-sm tracking-widest uppercase px-4 py-2 rounded-full backdrop-blur-md transition-colors cursor-pointer ${
-                            theme === "dark"
-                              ? "text-white/80 border border-white/20 hover:bg-white/10"
-                              : "text-gray-700 border border-gray-300 hover:bg-gray-100"
-                          }`}
-                        >
-                          Explore Services
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* --- INDICATOR BARS --- */}
-          <div className="absolute bottom-12 left-6 right-6 md:left-12 md:right-12 z-50 flex gap-4">
-            {services.map((_, index) => (
-              <div
-                key={index}
-                className={`relative h-[2px] flex-1 overflow-hidden ${
-                  theme === "dark" ? "bg-white/20" : "bg-gray-400/40"
+            <motion.h2
+              className="text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <span
+                className={`block font-light transition-colors duration-500 ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
                 }`}
               >
-                <div
-                  className={`absolute inset-0 transition-all duration-500 ease-out ${
-                    theme === "dark"
-                      ? "bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                      : "bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"
-                  } ${
-                    activeSlide >= index
-                      ? "w-full opacity-100"
-                      : "w-0 opacity-0"
-                  }`}
-                />
-              </div>
+                Our Best
+              </span>
+              <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
+                Services!
+              </span>
+            </motion.h2>
+
+            <motion.p
+              className={`mt-8 text-lg max-w-sm font-light mb-10 transition-colors duration-500 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              We deliver comprehensive solutions tailored to your business
+              needs, from visual storytelling to digital transformation.
+            </motion.p>
+          </motion.div>
+
+          {/* RIGHT COLUMN - Scrollable Cards */}
+          <div className="lg:w-7/12 space-y-6">
+            {services.map((service, index) => (
+              <ServiceCard
+                key={service.id}
+                service={service}
+                index={index}
+                theme={theme}
+              />
             ))}
           </div>
         </div>
