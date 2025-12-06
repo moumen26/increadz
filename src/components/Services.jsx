@@ -6,21 +6,21 @@ import { useTheme } from "../context/ThemeContext";
 const services = [
   {
     id: 1,
-    title: "Photography & Filmmaking",
-    category: "Visual Production",
-    description:
-      "High-quality visual production to bring your story to life. From events to product shoots, we deliver impactful content for brands and social media.",
-    image:
-      "https://images.unsplash.com/photo-1576280314550-773c50583407?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
-  {
-    id: 2,
     title: "Website & App Development",
     category: "Digital Solutions",
     description:
       "Tailored digital solutions built for performance, simplicity, and scale. We design and develop websites and mobile applications that align with your business goals.",
     image:
       "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
+   {
+    id: 2,
+    title: "Photography & Filmmaking",
+    category: "Visual Production",
+    description:
+      "High-quality visual production to bring your story to life. From events to product shoots, we deliver impactful content for brands and social media.",
+    image:
+      "https://images.unsplash.com/photo-1576280314550-773c50583407?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
