@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "./AnimatedButton"; // Reuse your existing button
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Icons ---
 const ArrowDown = () => (
@@ -19,18 +20,19 @@ const ArrowDown = () => (
   </svg>
 );
 
-const options = [
-  { value: "photography", label: "Photography & Filmmaking" },
-  { value: "web-design", label: "Website Development" },
-  { value: "app-development", label: "App Development" },
-  { value: "social-media", label: "Social Media Marketing" },
-  { value: "branding", label: "Branding & Design" },
-  { value: "other", label: "Other" },
+const getOptions = (t) => [
+  { value: "photography", label: t("photography") },
+  { value: "web-design", label: t("webDesign") },
+  { value: "app-development", label: t("appDevelopment") },
+  { value: "social-media", label: t("socialMedia") },
+  { value: "branding", label: t("branding") },
+  { value: "other", label: t("other") },
 ];
 
-const CustomSelect = ({ theme }) => {
+const CustomSelect = ({ theme, t }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const options = getOptions(t);
 
   const handleSelect = (option) => {
     setSelectedOption(option);
@@ -44,10 +46,10 @@ const CustomSelect = ({ theme }) => {
     };
 
     if (isOpen) {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
     }
 
-    return () => document.removeEventListener('click', handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [isOpen]);
 
   return (
@@ -60,11 +62,16 @@ const CustomSelect = ({ theme }) => {
           theme === "dark" ? "border-white/20" : "border-gray-300"
         }`}
       >
-        <span className={selectedOption
-          ? theme === "dark" ? "text-white" : "text-gray-900"
-          : "text-gray-500"
-        }>
-          {selectedOption ? selectedOption.label : "Select an option"}
+        <span
+          className={
+            selectedOption
+              ? theme === "dark"
+                ? "text-white"
+                : "text-gray-900"
+              : "text-gray-500"
+          }
+        >
+          {selectedOption ? selectedOption.label : t("selectOption")}
         </span>
         <motion.div
           className="text-cyan-400"
@@ -77,7 +84,7 @@ const CustomSelect = ({ theme }) => {
 
       {/* Label */}
       <label className="absolute left-0 -top-4 text-gray-500 text-xs">
-        Interested in
+        {t("interestedIn")}
       </label>
 
       {/* Dropdown Menu */}
@@ -141,6 +148,7 @@ const CustomSelect = ({ theme }) => {
 
 export default function Contact() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <section
@@ -152,38 +160,61 @@ export default function Contact() {
       {/* Optional Background Glow */}
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-12 lg:gap-20">
           {/* --- LEFT SIDE: Content --- */}
-          <div className="lg:w-5/12">
-            <motion.h2
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase mb-8"
+          <motion.div
+            className="lg:w-5/12 lg:sticky lg:top-24 lg:self-start shrink-0"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {/* The Vertical Cyan Line Decoration */}
+            <div
+              className={`absolute -left-6 top-2 bottom-2 w-[2px] hidden lg:block ${
+                theme === "dark" ? "bg-white/5" : "bg-gray-200"
+              }`}
             >
-              <span className={`block font-light transition-colors duration-500 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}>Let's Start</span>
+              <motion.div
+                className="w-full h-32 bg-cyan-400"
+                initial={{ height: 0 }}
+                whileInView={{ height: 128 }}
+                transition={{ duration: 1, delay: 0.5 }}
+              ></motion.div>
+            </div>
+
+            <motion.h2
+              className="text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.9] uppercase"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <span
+                className={`block font-light transition-colors duration-500 ${
+                  theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
+              >
+                {t("contactTitle1")}
+              </span>
               <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
-                A Project
+                {t("contactTitle2")}
               </span>
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className={`text-lg leading-relaxed max-w-md transition-colors duration-500 ${
+              className={`mt-8 text-lg max-w-sm font-light mb-10 transition-colors duration-500 ${
                 theme === "dark" ? "text-gray-400" : "text-gray-600"
               }`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+              viewport={{ once: true }}
             >
-              Reach out to us, and we'll get back to you as soon as possible.
-              We're here to help you take the next step toward success.
+              {t("contactDescription")}
             </motion.p>
-          </div>
+          </motion.div>
 
           {/* --- RIGHT SIDE: Form --- */}
           <div className="lg:w-7/12">
@@ -209,7 +240,7 @@ export default function Contact() {
                   htmlFor="name"
                   className="absolute left-0 top-4 text-gray-500 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none"
                 >
-                  Your Name
+                  {t("yourName")}
                 </label>
               </motion.div>
 
@@ -234,7 +265,7 @@ export default function Contact() {
                   htmlFor="email"
                   className="absolute left-0 top-4 text-gray-500 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none"
                 >
-                  Email Address
+                  {t("emailAddress")}
                 </label>
               </motion.div>
 
@@ -244,7 +275,7 @@ export default function Contact() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                <CustomSelect theme={theme} />
+                <CustomSelect theme={theme} t={t} />
               </motion.div>
 
               {/* Message Input */}
@@ -268,7 +299,7 @@ export default function Contact() {
                   htmlFor="message"
                   className="absolute left-0 top-4 text-gray-500 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none"
                 >
-                  Message
+                  {t("message")}
                 </label>
               </motion.div>
 
@@ -280,7 +311,7 @@ export default function Contact() {
                 className="pt-4"
               >
                 <AnimatedButton
-                  text="Send Now"
+                  text={t("sendNow")}
                   className="bg-white text-black hover:bg-cyan-400 border-none"
                 />
               </motion.div>

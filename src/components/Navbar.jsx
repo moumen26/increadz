@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedButton from "./AnimatedButton";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Mobile Link Component ---
 const MobileNavLink = ({ href, label, index, active, onClick, theme }) => {
@@ -38,6 +39,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -112,14 +114,14 @@ export default function Navbar() {
           >
             <div className="relative overflow-hidden">
               <span className="inline-block transition-transform duration-300 ease-in-out group-hover:-translate-y-full">
-                Home
+                {t("home")}
               </span>
               <span className="absolute left-0 top-0 inline-block h-full w-full translate-y-full text-cyan-400 transition-transform duration-300 ease-in-out group-hover:translate-y-0">
-                Home
+                {t("home")}
               </span>
             </div>
           </a>
-          {["About", "Services", "Process", "Contact"].map((item) => (
+          {["about", "services", "process", "contact"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
@@ -133,10 +135,10 @@ export default function Navbar() {
             >
               <div className="relative overflow-hidden">
                 <span className="inline-block transition-transform duration-300 ease-in-out group-hover:-translate-y-full">
-                  {item}
+                  {t(item)}
                 </span>
                 <span className="absolute left-0 top-0 inline-block h-full w-full translate-y-full text-cyan-400 transition-transform duration-300 ease-in-out group-hover:translate-y-0">
-                  {item}
+                  {t(item)}
                 </span>
               </div>
             </a>
@@ -145,13 +147,30 @@ export default function Navbar() {
 
         <div className="hidden sm:flex items-center gap-3">
           <button
+            onClick={toggleLanguage}
+            className={`w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
+              theme === "dark"
+                ? "bg-white/5 border border-white/10 hover:bg-white/10"
+                : "bg-gray-100 border border-gray-200 hover:bg-gray-200"
+            }`}
+            aria-label={t("toggleLanguage")}
+          >
+            <span
+              className={`text-sm font-bold ${
+                theme === "dark" ? "text-white" : "text-gray-700"
+              }`}
+            >
+              {language.toUpperCase()}
+            </span>
+          </button>
+          <button
             onClick={toggleTheme}
             className={`w-10 h-10 rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
               theme === "dark"
                 ? "bg-white/5 border border-white/10 hover:bg-white/10"
                 : "bg-gray-100 border border-gray-200 hover:bg-gray-200"
             }`}
-            aria-label="Toggle theme"
+            aria-label={t("toggleTheme")}
           >
             {theme === "dark" ? (
               <svg
@@ -185,7 +204,7 @@ export default function Navbar() {
               </svg>
             )}
           </button>
-          <AnimatedButton text="Let's Contact" />
+          <AnimatedButton text={t("letsContact")} className="w-48" />
         </div>
 
         {/* Hamburger Button */}
@@ -243,7 +262,7 @@ export default function Navbar() {
                   : "translate-y-10 opacity-0"
               }`}
             >
-              Menu
+              {t("menu")}
             </p>
 
             <div
@@ -255,7 +274,7 @@ export default function Navbar() {
             >
               <MobileNavLink
                 href="#"
-                label="Home"
+                label={t("home")}
                 index={0}
                 active={active === "home"}
                 onClick={() => setMobileMenuOpen(false)}
@@ -263,7 +282,7 @@ export default function Navbar() {
               />
               <MobileNavLink
                 href="#about"
-                label="About"
+                label={t("about")}
                 index={1}
                 active={active === "about"}
                 onClick={() => setMobileMenuOpen(false)}
@@ -271,7 +290,7 @@ export default function Navbar() {
               />
               <MobileNavLink
                 href="#services"
-                label="Services"
+                label={t("services")}
                 index={2}
                 active={active === "services"}
                 onClick={() => setMobileMenuOpen(false)}
@@ -279,7 +298,7 @@ export default function Navbar() {
               />
               <MobileNavLink
                 href="#process"
-                label="Process"
+                label={t("process")}
                 index={3}
                 active={active === "process"}
                 onClick={() => setMobileMenuOpen(false)}
@@ -287,7 +306,7 @@ export default function Navbar() {
               />
               <MobileNavLink
                 href="#contact"
-                label="Contact"
+                label={t("contact")}
                 index={4}
                 active={active === "contact"}
                 onClick={() => setMobileMenuOpen(false)}
@@ -314,13 +333,30 @@ export default function Navbar() {
               </p>
               <div className="flex items-center gap-3">
                 <button
+                  onClick={toggleLanguage}
+                  className={`w-12 h-12 rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
+                    theme === "dark"
+                      ? "bg-white/5 border border-white/10 hover:bg-white/10"
+                      : "bg-gray-100 border border-gray-200 hover:bg-gray-200"
+                  }`}
+                  aria-label={t("toggleLanguage")}
+                >
+                  <span
+                    className={`text-sm font-bold ${
+                      theme === "dark" ? "text-white" : "text-gray-700"
+                    }`}
+                  >
+                    {language.toUpperCase()}
+                  </span>
+                </button>
+                <button
                   onClick={toggleTheme}
                   className={`w-12 h-12 rounded-full backdrop-blur-sm flex items-center justify-center transition-colors ${
                     theme === "dark"
                       ? "bg-white/5 border border-white/10 hover:bg-white/10"
                       : "bg-gray-100 border border-gray-200 hover:bg-gray-200"
                   }`}
-                  aria-label="Toggle theme"
+                  aria-label={t("toggleTheme")}
                 >
                   {theme === "dark" ? (
                     <svg
@@ -359,7 +395,7 @@ export default function Navbar() {
                   className="flex-1"
                 >
                   <AnimatedButton
-                    text="Let's Contact"
+                    text={t("letsContact")}
                     className="w-full text-center justify-center"
                   />
                 </div>

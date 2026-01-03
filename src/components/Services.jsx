@@ -1,35 +1,33 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Service Data ---
-const services = [
+const getServices = (t) => [
   {
     id: 1,
-    title: "Website & App Development",
-    category: "Digital Solutions",
-    description:
-      "Tailored digital solutions built for performance, simplicity, and scale. We design and develop websites and mobile applications that align with your business goals.",
+    title: t("webDevTitle"),
+    category: t("webDevCategory"),
+    description: t("webDevDescription"),
     image:
       "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
-   {
+  {
     id: 2,
-    title: "Photography & Filmmaking",
-    category: "Visual Production",
-    description:
-      "High-quality visual production to bring your story to life. From events to product shoots, we deliver impactful content for brands and social media.",
+    title: t("socialMediaTitle"),
+    category: t("socialMediaCategory"),
+    description: t("socialMediaDescription"),
     image:
-      "https://images.unsplash.com/photo-1576280314550-773c50583407?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1622549037543-49cf1ca0babc?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
-    title: "Social Media Marketing",
-    category: "Brand Growth",
-    description:
-      "End-to-end social media management to grow your audience and elevate your brand through strategic content and targeted campaigns.",
+    title: t("photoVideoTitle"),
+    category: t("photoVideoCategory"),
+    description: t("photoVideoDescription"),
     image:
-      "https://images.unsplash.com/photo-1622549037543-49cf1ca0babc?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.unsplash.com/photo-1576280314550-773c50583407?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 
@@ -167,6 +165,8 @@ const ServiceCard = ({ service, index, theme }) => {
 // --- Main Section Component ---
 export default function Services() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
+  const services = getServices(t);
 
   return (
     <section
@@ -212,10 +212,10 @@ export default function Services() {
                   theme === "dark" ? "text-white" : "text-gray-900"
                 }`}
               >
-                Our Best
+                {t("servicesSubtitle")}
               </span>
               <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
-                Services!
+                {t("servicesTitle")}
               </span>
             </motion.h2>
 
@@ -228,8 +228,7 @@ export default function Services() {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
               viewport={{ once: true }}
             >
-              We deliver comprehensive solutions tailored to your business
-              needs, from visual storytelling to digital transformation.
+              {t("servicesDescription")}
             </motion.p>
           </motion.div>
 

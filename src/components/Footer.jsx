@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Icons ---
 const InstagramIcon = () => (
@@ -72,6 +73,7 @@ const ArrowUpRight = () => (
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <footer
@@ -104,8 +106,7 @@ export default function Footer() {
                 theme === "dark" ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              We build digital experiences that blend strategy, design, and
-              technology.
+              {t("footerDescription")}
             </motion.p>
           </div>
 
@@ -183,14 +184,16 @@ export default function Footer() {
               : "border-gray-200 text-gray-600"
           }`}
         >
-          <p>&copy; {currentYear} Increadz. All rights reserved.</p>
+          <p>
+            &copy; {currentYear} Increadz. {t("allRightsReserved")}.
+          </p>
 
           <div className="flex gap-8">
             <a href="#" className="hover:text-cyan-400 transition-colors">
-              Privacy Policy
+              {t("privacyPolicy")}
             </a>
             <a href="#" className="hover:text-cyan-400 transition-colors">
-              Terms of Service
+              {t("termsOfService")}
             </a>
           </div>
         </motion.div>

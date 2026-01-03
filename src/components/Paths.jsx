@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Icons for the Cards ---
 const ClarityIcon = ({ theme }) => (
@@ -178,31 +179,29 @@ const CubeGraphic = () => {
 
 export default function Paths() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   const mobileCards = [
     {
       id: 1,
-      title: "Creative Clarity",
-      description:
-        "Focused, innovative design that reflects your brand's essence. We strip away the noise to reveal the core message.",
+      title: t("creativeClarity"),
+      description: t("creativeClarityDesc"),
       icon: <ClarityIcon theme={theme} />,
-      badge: "Path 01",
+      badge: t("pathBadge1"),
     },
     {
       id: 2,
-      title: "Technical Precision",
-      description:
-        "Seamless systems and processes for long-term scalability. We build robust foundations that grow with you.",
+      title: t("technicalPrecision"),
+      description: t("technicalPrecisionDesc"),
       icon: <PrecisionIcon />,
-      badge: "Path 02",
+      badge: t("pathBadge2"),
     },
     {
       id: 3,
-      title: "Strategic Thinking",
-      description:
-        "Clear, data-driven insights to make every step count. We don't just guess; we calculate your next move.",
+      title: t("strategicThinking"),
+      description: t("strategicThinkingDesc"),
       icon: <StrategyIcon />,
-      badge: "Path 03",
+      badge: t("pathBadge3"),
     },
   ];
 
@@ -226,7 +225,7 @@ export default function Paths() {
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
-            Three paths <br />
+            {t("pathsTitle1")} <br />
             <span
               className={`font-semibold bg-clip-text text-transparent transition-colors duration-500 ${
                 theme === "dark"
@@ -234,7 +233,7 @@ export default function Paths() {
                   : "bg-gradient-to-b from-gray-900 to-gray-600"
               }`}
             >
-              to progress
+              {t("pathsTitle2")}
             </span>
           </motion.h2>
           <motion.p
@@ -245,8 +244,7 @@ export default function Paths() {
               theme === "dark" ? "text-gray-400" : "text-gray-600"
             }`}
           >
-            At the core of our approach are three key areas of expertise. We
-            blend strategy, creativity, and technology to fuel your growth.
+            {t("pathsDescription")}
           </motion.p>
         </div>
 
@@ -287,11 +285,10 @@ export default function Paths() {
                   <ClarityIcon theme={theme} />
                 </div>
                 <h3 className="text-2xl font-bold text-black mb-3">
-                  Creative Clarity
+                  {t("creativeClarity")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Focused, innovative design that reflects your brand's essence.
-                  We strip away the noise to reveal the core message.
+                  {t("creativeClarityDesc")}
                 </p>
                 <div
                   className="absolute bottom-0 right-0 w-8 h-8 bg-cyan-400"
@@ -324,15 +321,14 @@ export default function Paths() {
                     theme === "dark" ? "text-white" : "text-gray-900"
                   }`}
                 >
-                  Technical Precision
+                  {t("technicalPrecision")}
                 </h3>
                 <p
                   className={`leading-relaxed ${
                     theme === "dark" ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  Seamless systems and processes for long-term scalability. We
-                  build robust foundations that grow with you.
+                  {t("technicalPrecisionDesc")}
                 </p>
               </div>
             </motion.div>
@@ -361,15 +357,14 @@ export default function Paths() {
                     theme === "dark" ? "text-white" : "text-gray-900"
                   }`}
                 >
-                  Strategic Thinking
+                  {t("strategicThinking")}
                 </h3>
                 <p
                   className={`leading-relaxed ${
                     theme === "dark" ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  Clear, data-driven insights to make every step count. We don't
-                  just guess; we calculate your next move.
+                  {t("strategicThinkingDesc")}
                 </p>
               </div>
             </motion.div>

@@ -1,40 +1,37 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
-// --- Data ---
-const testimonials = [
+// --- Data Function ---
+const getTestimonials = (t) => [
   {
     id: 1,
     number: "01",
-    quote:
-      "From branding to product UI, their work elevated our entire digital experience. The communication was smooth, and the results speak for themselves.",
-    name: "Jason Ahmed",
-    role: "Founder of BloomCRM",
+    quote: t("testimonial1Quote"),
+    name: t("testimonial1Name"),
+    role: t("testimonial1Role"),
   },
   {
     id: 2,
     number: "02",
-    quote:
-      "They truly understood our brand voice and delivered a website that feels like 'us.' Our users love it, and so do we.",
-    name: "Monica Reyes",
-    role: "Marketing Director at Fitwise",
+    quote: t("testimonial2Quote"),
+    name: t("testimonial2Name"),
+    role: t("testimonial2Role"),
   },
   {
     id: 3,
     number: "03",
-    quote:
-      "Working with increadz was a game-changer. Their ability to turn abstract ideas into beautiful, functional designs is unmatched.",
-    name: "Sarah Lin",
-    role: "CEO at Nova Tech",
+    quote: t("testimonial3Quote"),
+    name: t("testimonial3Name"),
+    role: t("testimonial3Role"),
   },
   {
     id: 4,
     number: "04",
-    quote:
-      "The strategic approach to our rebranding was phenomenal. We've seen a 40% increase in engagement since launch.",
-    name: "David Miller",
-    role: "CTO at NexusStream",
+    quote: t("testimonial4Quote"),
+    name: t("testimonial4Name"),
+    role: t("testimonial4Role"),
   },
 ];
 
@@ -74,6 +71,8 @@ const ArrowRight = () => (
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { theme } = useTheme();
+  const { t } = useLanguage();
+  const testimonials = getTestimonials(t);
   const mobileSliderRef = useRef(null);
 
   // Logic to handle "Next" (Cycles through 1 by 1, loops back)
@@ -132,10 +131,10 @@ export default function Testimonials() {
                 theme === "dark" ? "text-white" : "text-gray-900"
               }`}
             >
-              What Our
+              {t("testimonialsTitle1")}
             </span>
             <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
-              Clients Say
+              {t("testimonialsTitle2")}
             </span>
           </motion.h2>
 

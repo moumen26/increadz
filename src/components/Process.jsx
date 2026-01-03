@@ -1,38 +1,34 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Process Data ---
-const steps = [
+const getSteps = (t) => [
   {
     id: 1,
-    title: "Goal Alignment Session",
-    description:
-      "We learn about your business, your pain points, and your goals. No fluff, just focused exploration to understand exactly what success looks like for you.",
+    title: t("step1Title"),
+    description: t("step1Desc"),
   },
   {
     id: 2,
-    title: "Design Flow Assessment",
-    description:
-      "We assess your operations, market position, and opportunities. We find the gaps and identify the growth levers that will make the biggest impact.",
+    title: t("step2Title"),
+    description: t("step2Desc"),
   },
   {
     id: 3,
-    title: "Experience Strategy Plan",
-    description:
-      "You get a clear, step-by-step strategy designed around your goals. From short-term wins to long-term impact, we map out the journey.",
+    title: t("step3Title"),
+    description: t("step3Desc"),
   },
   {
     id: 4,
-    title: "Brand Growth Engagement",
-    description:
-      "We guide you through implementation, offer expert feedback, and help solve roadblocks. You’re never alone—we move together.",
+    title: t("step4Title"),
+    description: t("step4Desc"),
   },
   {
     id: 5,
-    title: "Launch & Performance Tune-Up",
-    description:
-      "Growth isn’t a one-time event. We review progress and adapt the plan to stay aligned. We evolve with confidence to ensure sustained results.",
+    title: t("step5Title"),
+    description: t("step5Desc"),
   },
 ];
 
@@ -54,7 +50,7 @@ const ArrowRight = () => (
 );
 
 // --- Card Component (Matches ServiceCard style) ---
-const ProcessCard = ({ step, index, theme }) => {
+const ProcessCard = ({ step, index, theme, t }) => {
   const formattedIndex = `0${index + 1}`;
 
   return (
@@ -96,7 +92,7 @@ const ProcessCard = ({ step, index, theme }) => {
                 : "bg-cyan-50 border border-cyan-200"
             }`}
           >
-            Step {formattedIndex}
+            {t("step")} {formattedIndex}
           </span>
           <h3
             className={`text-3xl font-medium transition-colors duration-300 ${
@@ -161,6 +157,8 @@ const ProcessCard = ({ step, index, theme }) => {
 // --- Main Section Component ---
 export default function Process() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
+  const steps = getSteps(t);
 
   return (
     <section
@@ -206,10 +204,10 @@ export default function Process() {
                   theme === "dark" ? "text-white" : "text-gray-900"
                 }`}
               >
-                Our Process
+                {t("processTitle1")}
               </span>
               <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
-                Built For Action
+                {t("processTitle2")}
               </span>
             </motion.h2>
 
@@ -222,8 +220,7 @@ export default function Process() {
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
               viewport={{ once: true }}
             >
-              At increadz, we follow a structured, yet flexible approach to
-              ensure that every website we build achieves its goals.
+              {t("processDescription")}
             </motion.p>
           </motion.div>
 
@@ -235,6 +232,7 @@ export default function Process() {
                 step={step}
                 index={index}
                 theme={theme}
+                t={t}
               />
             ))}
           </div>

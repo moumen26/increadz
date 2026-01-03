@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion"; // Import motion
 import HeroButton from "./HeroButton";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
 // Animation Variants
 const containerVariants = {
@@ -30,6 +31,7 @@ const itemVariants = {
 
 export default function Hero() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <main className="flex-1 flex items-center justify-center pointer-events-auto md:pt-[70px]">
@@ -48,7 +50,7 @@ export default function Hero() {
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
-            Your Vision Is
+            {t("heroLine1")}
           </motion.span>
 
           {/* Line 2 (Gradient) */}
@@ -56,7 +58,7 @@ export default function Hero() {
             variants={itemVariants}
             className="block font-semibold bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent"
           >
-            Our Mission.
+            {t("heroLine2")}
           </motion.span>
         </h1>
 
@@ -67,12 +69,12 @@ export default function Hero() {
             theme === "dark" ? "text-gray-400" : "text-gray-600"
           }`}
         >
-          We're here to create bold digital solutions that convert.
+          {t("heroSubtitle")}
         </motion.p>
 
         {/* Button */}
         <motion.div variants={itemVariants}>
-          <HeroButton text="Let's Contact" />
+          <HeroButton text={t("letsContact")} />
         </motion.div>
       </motion.div>
     </main>

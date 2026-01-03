@@ -1,55 +1,54 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
 
-// --- Stats Data ---
-const stats = [
+// --- Stats Data Function ---
+const getStats = (t) => [
   {
     id: 1,
     number: "200+",
-    label: "Projects Completed",
+    label: t("projectsCompleted"),
   },
   {
     id: 2,
     number: "50+",
-    label: "Happy Clients",
+    label: t("happyClients"),
   },
   {
     id: 3,
     number: "5+",
-    label: "Years Experience",
+    label: t("yearsExperience"),
   },
   {
     id: 4,
     number: "100%",
-    label: "Client Satisfaction",
+    label: t("clientSatisfaction"),
   },
 ];
 
-// --- Values Data ---
-const values = [
+// --- Values Data Function ---
+const getValues = (t) => [
   {
     id: 1,
-    title: "Innovation",
-    description:
-      "We push creative boundaries to deliver cutting-edge solutions that stand out.",
+    title: t("innovation"),
+    description: t("innovationDesc"),
   },
   {
     id: 2,
-    title: "Quality",
-    description:
-      "Excellence is our standard. Every project receives meticulous attention to detail.",
+    title: t("quality"),
+    description: t("qualityDesc"),
   },
   {
     id: 3,
-    title: "Partnership",
-    description:
-      "Your success is our mission. We work closely with you at every step.",
+    title: t("partnership"),
+    description: t("partnershipDesc"),
   },
 ];
 
 export default function About() {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -73,12 +72,12 @@ export default function About() {
       }`}
     >
       {/* Container */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-24 md:pt-32">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 relative z-10">
         {/* --- HEADER SECTION --- */}
-        <div className="flex flex-col lg:flex-row lg:items-start justify-center gap-12 lg:gap-20 mb-20">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-12 lg:gap-20">
           {/* LEFT COLUMN - Title */}
           <motion.div
-            className="lg:w-5/12 shrink-0 h-full"
+            className="lg:w-5/12 lg:sticky lg:top-24 lg:self-start shrink-0"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -86,14 +85,14 @@ export default function About() {
           >
             {/* Vertical Cyan Line Decoration */}
             <div
-              className={`absolute -left-6 top-2 w-[2px] h-32 hidden lg:block ${
+              className={`absolute -left-6 top-2 bottom-2 w-[2px] hidden lg:block ${
                 theme === "dark" ? "bg-white/5" : "bg-gray-200"
               }`}
             >
               <motion.div
-                className="w-full bg-cyan-400"
+                className="w-full h-32 bg-cyan-400"
                 initial={{ height: 0 }}
-                whileInView={{ height: "100%" }}
+                whileInView={{ height: 128 }}
                 transition={{ duration: 1, delay: 0.5 }}
               ></motion.div>
             </div>
@@ -110,12 +109,24 @@ export default function About() {
                   theme === "dark" ? "text-white" : "text-gray-900"
                 }`}
               >
-                Who We
+                {t("aboutTitle1")}
               </span>
               <span className="block font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mt-2">
-                Are?
+                {t("aboutTitle2")}
               </span>
             </motion.h2>
+
+            <motion.p
+              className={`mt-8 text-lg max-w-sm font-light mb-10 transition-colors duration-500 ${
+                theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              {t("aboutMainText")}
+            </motion.p>
           </motion.div>
 
           {/* RIGHT COLUMN - Description */}
@@ -136,10 +147,18 @@ export default function About() {
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                At <span className="font-semibold text-cyan-400">Increadz</span>
-                , we provide professional advertising, custom website creation,
-                captivating design, and high-quality photography and filmmaking
-                to bring your vision to life.
+                {t("aboutDescription")
+                  .split("Increadz")
+                  .map((part, index, array) => (
+                    <span key={index}>
+                      {part}
+                      {index < array.length - 1 && (
+                        <span className="font-semibold text-cyan-400">
+                          Increadz
+                        </span>
+                      )}
+                    </span>
+                  ))}
               </motion.p>
 
               <motion.p
@@ -151,9 +170,7 @@ export default function About() {
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
                 viewport={{ once: true }}
               >
-                Whether enhancing your digital presence or creating impactful
-                content, we deliver expertise and innovation that transforms
-                ideas into remarkable realities.
+                {t("aboutMainText")}
               </motion.p>
             </div>
           </motion.div>
