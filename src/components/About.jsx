@@ -160,18 +160,6 @@ export default function About() {
                     </span>
                   ))}
               </motion.p>
-
-              <motion.p
-                className={`text-lg md:text-xl leading-relaxed transition-colors duration-500 ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-600"
-                }`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-                viewport={{ once: true }}
-              >
-                {t("aboutMainText")}
-              </motion.p>
             </div>
           </motion.div>
         </div>
