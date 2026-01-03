@@ -8,6 +8,7 @@ import Projects from "../components/Projects";
 import Paths from "../components/Paths";
 import Process from "../components/Process";
 import Testimonials from "../components/Testimonials";
+import FAQ from "../components/FAQ"; // <--- IMPORT HERE
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import { useTheme } from "../context/ThemeContext";
@@ -54,7 +55,7 @@ export default function Home() {
       </div>
       <div className="relative z-10 min-h-screen">
         <About />
-      </div>{" "}
+      </div>
       <div className="relative z-10 min-h-screen">
         <Services />
       </div>
@@ -67,6 +68,13 @@ export default function Home() {
       <div className="relative z-10 min-h-screen">
         <Testimonials />
       </div>
+
+      {/* --- ADD FAQ HERE --- */}
+      <div className="relative z-10">
+        <FAQ />
+      </div>
+      {/* ------------------ */}
+
       <div className="relative z-10 min-h-screen">
         <Contact />
       </div>

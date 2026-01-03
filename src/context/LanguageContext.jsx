@@ -13,6 +13,7 @@ export const useLanguage = () => {
 // Translation data
 const translations = {
   en: {
+    // ... (Previous translations remain the same) ...
     // Navigation
     home: "Home",
     about: "About",
@@ -80,6 +81,41 @@ const translations = {
     step5Title: "Launch & Performance Tune-Up",
     step5Desc:
       "Growth isn't a one-time event. We review progress and adapt the plan to stay aligned. We evolve with confidence to ensure sustained results.",
+
+    // --- FAQ Section ---
+    faqTitle1: "Good to",
+    faqTitle2: "Know",
+    faqDescription:
+      "Answers to the questions our clients ask us most often before launching their project.",
+
+    faqQuestion1: "What is the delivery time for a website?",
+    faqAnswer1:
+      "It depends on the complexity of the project. Generally, a showcase site takes between 2 to 4 weeks, while a more complex platform may require 8 to 12 weeks.",
+
+    faqQuestion2: "How does your creation process work?",
+    faqAnswer2:
+      "We follow a 5-step agile methodology: Discovery, Strategy, Design, Development, and Launch, with regular validations at each stage.",
+
+    faqQuestion3: "Can I modify my site after launch?",
+    faqAnswer3:
+      "Absolutely. We train you on using the CMS so you can be autonomous with content, or we can handle maintenance for you.",
+
+    faqQuestion4: "What technologies do you use?",
+    faqAnswer4:
+      "We mainly use React, Next.js, Node.js, and Tailwind CSS for optimal performance and custom design.",
+
+    faqQuestion5: "Do you offer payment plans?",
+    faqAnswer5:
+      "Yes, we generally propose a 30% deposit to start, 30% mid-project, and the balance upon delivery. Custom plans are possible.",
+
+    // NEW ADDITIONS (EN)
+    faqQuestion6: "How do feedback and revisions work?",
+    faqAnswer6:
+      "We work in iterations. At each key stage (Design, Dev), we present progress and gather your feedback. We include revision cycles to ensure the final result perfectly matches your vision.",
+
+    faqQuestion7: "Will my site be well-ranked on Google?",
+    faqAnswer7:
+      "Absolutely. SEO is at the heart of our development. We optimize structure, loading speed, semantic tagging, and mobile adaptability to ensure the best performance on search engines.",
 
     // Contact Section
     contactTitle1: "Let's Start",
@@ -245,6 +281,41 @@ const translations = {
     step5Title: "Lancement & Réglage de Performance",
     step5Desc:
       "La croissance n'est pas un événement unique. Nous révisons les progrès et adaptons le plan pour rester alignés. Nous évoluons avec confiance pour assurer des résultats durables.",
+
+    // --- FAQ Section ---
+    faqTitle1: "Tout",
+    faqTitle2: "Savoir",
+    faqDescription:
+      "Les réponses aux questions que nos clients nous posent le plus souvent avant de lancer leur projet.",
+
+    faqQuestion1: "Quel est le délai de livraison pour un site web ?",
+    faqAnswer1:
+      "Cela dépend de la complexité du projet. En général, un site vitrine prend entre 2 à 4 semaines, tandis qu'une plateforme plus complexe peut nécessiter 8 à 12 semaines.",
+
+    faqQuestion2: "Comment fonctionne votre processus de création ?",
+    faqAnswer2:
+      "Nous suivons une méthodologie agile en 5 étapes : Découverte, Stratégie, Design, Développement et Lancement, avec des validations régulières à chaque étape.",
+
+    faqQuestion3: "Puis-je modifier mon site après le lancement ?",
+    faqAnswer3:
+      "Absolument. Nous vous formons à l'utilisation du CMS pour que vous soyez autonome sur les contenus, ou nous pouvons assurer la maintenance pour vous.",
+
+    faqQuestion4: "Quelles technologies utilisez-vous ?",
+    faqAnswer4:
+      "Nous utilisons principalement React, Next.js, Node.js et Tailwind CSS pour des performances optimales et un design sur-mesure.",
+
+    faqQuestion5: "Proposez-vous des facilités de paiement ?",
+    faqAnswer5:
+      "Oui, nous proposons généralement un acompte de 30% au démarrage, 30% à mi-projet et le solde à la livraison. Des plans sur mesure sont possibles.",
+
+    // NEW ADDITIONS (FR)
+    faqQuestion6: "Comment se passent les retours et révisions ?",
+    faqAnswer6:
+      "Nous fonctionnons par itérations. À chaque étape clé (Design, Dev), nous vous présentons l'avancement et recueillons vos retours. Nous incluons des cycles de révision pour garantir que le résultat final soit parfait.",
+
+    faqQuestion7: "Mon site sera-t-il bien référencé sur Google ?",
+    faqAnswer7:
+      "Absolument. Le référencement naturel (SEO) est au cœur de notre développement. Nous optimisons la structure, la vitesse et le balisage sémantique pour garantir les meilleures performances sur les moteurs de recherche.",
 
     // Contact Section
     contactTitle1: "Création",
