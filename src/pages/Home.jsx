@@ -13,6 +13,7 @@ import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import { useTheme } from "../context/ThemeContext";
 import About from "../components/About";
+import Works from "../components/Works";
 
 export default function Home() {
   const { theme } = useTheme();
@@ -58,6 +59,9 @@ export default function Home() {
       </div>
       <div className="relative z-10 min-h-screen">
         <Services />
+      </div>
+      <div className="relative z-10">
+        <Works />
       </div>
       <div className="relative z-10 min-h-screen">
         <Paths />

@@ -13,7 +13,6 @@ export const useLanguage = () => {
 // Translation data
 const translations = {
   en: {
-    // ... (Previous translations remain the same) ...
     // Navigation
     home: "Home",
     about: "About",
@@ -58,6 +57,17 @@ const translations = {
     photoVideoDescription:
       "High-quality visual production to bring your story to life. From events to product shoots, we deliver impactful content for brands and social media.",
 
+    // Works / Realizations Section (NEW)
+    worksTitle: "Selected",
+    worksSubtitle: "Works",
+    worksIntroDesc:
+      "Discover our most recent projects. Modern, high-performance websites designed to convert your visitors into loyal customers.",
+    catLogistics: "Logistics",
+    catEcommerce: "E-Commerce",
+    catWebApp: "Web Application",
+    catFashion: "Fashion",
+    catRealEstate: "Real Estate",
+
     // Process Section
     processTitle1: "Our Process",
     processTitle2: "Built For Action",
@@ -82,7 +92,7 @@ const translations = {
     step5Desc:
       "Growth isn't a one-time event. We review progress and adapt the plan to stay aligned. We evolve with confidence to ensure sustained results.",
 
-    // --- FAQ Section ---
+    // FAQ Section (NEW)
     faqTitle1: "Good to",
     faqTitle2: "Know",
     faqDescription:
@@ -108,7 +118,6 @@ const translations = {
     faqAnswer5:
       "Yes, we generally propose a 30% deposit to start, 30% mid-project, and the balance upon delivery. Custom plans are possible.",
 
-    // NEW ADDITIONS (EN)
     faqQuestion6: "How do feedback and revisions work?",
     faqAnswer6:
       "We work in iterations. At each key stage (Design, Dev), we present progress and gather your feedback. We include revision cycles to ensure the final result perfectly matches your vision.",
@@ -258,6 +267,17 @@ const translations = {
     photoVideoDescription:
       "Production visuelle de haute qualité pour donner vie à votre histoire. Des événements aux séances photo de produits, nous livrons du contenu percutant pour les marques et les réseaux sociaux.",
 
+    // Works / Realizations Section (NEW)
+    worksTitle: "Nos",
+    worksSubtitle: "Réalisations",
+    worksIntroDesc:
+      "Découvrez nos projets les plus récents. Des sites web modernes, performants et conçus pour convertir vos visiteurs en clients fidèles.",
+    catLogistics: "Logistique",
+    catEcommerce: "E-Commerce",
+    catWebApp: "Application Web",
+    catFashion: "Mode",
+    catRealEstate: "Immobilier",
+
     // Process Section
     processTitle1: "Notre Processus",
     processTitle2: "Conçu Pour l'Action",
@@ -282,7 +302,7 @@ const translations = {
     step5Desc:
       "La croissance n'est pas un événement unique. Nous révisons les progrès et adaptons le plan pour rester alignés. Nous évoluons avec confiance pour assurer des résultats durables.",
 
-    // --- FAQ Section ---
+    // FAQ Section (NEW)
     faqTitle1: "Tout",
     faqTitle2: "Savoir",
     faqDescription:
@@ -308,7 +328,6 @@ const translations = {
     faqAnswer5:
       "Oui, nous proposons généralement un acompte de 30% au démarrage, 30% à mi-projet et le solde à la livraison. Des plans sur mesure sont possibles.",
 
-    // NEW ADDITIONS (FR)
     faqQuestion6: "Comment se passent les retours et révisions ?",
     faqAnswer6:
       "Nous fonctionnons par itérations. À chaque étape clé (Design, Dev), nous vous présentons l'avancement et recueillons vos retours. Nous incluons des cycles de révision pour garantir que le résultat final soit parfait.",
