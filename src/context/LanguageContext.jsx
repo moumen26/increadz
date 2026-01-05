@@ -148,6 +148,19 @@ const translations = {
     branding: "Branding & Design",
     other: "Other",
 
+    // Form Validation
+    nameRequired: "Name is required",
+    emailRequired: "Email is required",
+    emailInvalid: "Please enter a valid email",
+    interestRequired: "Please select your interest",
+    messageRequired: "Message is required",
+
+    // Form Status
+    sending: "Sending...",
+    messageSent:
+      "Your message has been sent successfully! We'll get back to you soon.",
+    messageFailed: "There was an error sending your message. Please try again.",
+
     // Footer
     footerDescription:
       "We build digital experiences that blend strategy, design, and technology.",
@@ -357,6 +370,20 @@ const translations = {
     socialMedia: "Marketing des Réseaux Sociaux",
     branding: "Image de Marque & Design",
     other: "Autre",
+
+    // Form Validation
+    nameRequired: "Le nom est requis",
+    emailRequired: "L'email est requis",
+    emailInvalid: "Veuillez entrer un email valide",
+    interestRequired: "Veuillez sélectionner votre intérêt",
+    messageRequired: "Le message est requis",
+
+    // Form Status
+    sending: "Envoi en cours...",
+    messageSent:
+      "Votre message a été envoyé avec succès ! Nous vous répondrons bientôt.",
+    messageFailed:
+      "Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer.",
 
     // Footer
     footerDescription:

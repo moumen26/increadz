@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import AnimatedButton from "./AnimatedButton"; // Reuse your existing button
 import { useTheme } from "../context/ThemeContext";
 import { useLanguage } from "../context/LanguageContext";
+
+// EmailJS configuration - Replace these with your actual EmailJS credentials
+// See email-template-setup.md for complete setup instructions
+const EMAILJS_SERVICE_ID = "service_yxxr74l"; // Replace with your EmailJS service ID
+const EMAILJS_TEMPLATE_ID = "template_q2ejbs1"; // Replace with your EmailJS template ID
+const EMAILJS_AUTO_REPLY_TEMPLATE_ID = "template_socw5om"; // Auto-reply template ID
+const EMAILJS_PUBLIC_KEY = "JZmqenmj38konVZGy"; // Replace with your EmailJS public key
 
 // --- Icons ---
 const ArrowDown = () => (
@@ -29,14 +37,22 @@ const getOptions = (t) => [
   { value: "other", label: t("other") },
 ];
 
-const CustomSelect = ({ theme, t }) => {
+const CustomSelect = ({ theme, t, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(value || null);
   const options = getOptions(t);
+
+  useEffect(() => {
+    if (value) {
+      const option = options.find((opt) => opt.value === value);
+      setSelectedOption(option);
+    }
+  }, [value, options]);
 
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
+    onChange(option.value);
   };
 
   // Close dropdown when clicking outside
@@ -150,6 +166,173 @@ export default function Contact() {
   const { theme } = useTheme();
   const { t } = useLanguage();
 
+  // Form state
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    interest: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [errors, setErrors] = useState({});
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  // Handle select change
+  const handleSelectChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      interest: value,
+    }));
+    if (errors.interest) {
+      setErrors((prev) => ({
+        ...prev,
+        interest: "",
+      }));
+    }
+  };
+
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = t("nameRequired");
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = t("emailRequired");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = t("emailInvalid");
+    }
+
+    if (!formData.interest) {
+      newErrors.interest = t("interestRequired");
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = t("messageRequired");
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      // EmailJS template parameters for main contact email
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        to_email: "contact@increadz.com",
+        interest: formData.interest,
+        message: formData.message,
+        // Additional template variables for professional styling
+        company_name: "Increadz",
+        website_url: "https://increadz.com",
+        current_date: new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        current_time: new Date().toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
+
+      // Auto-reply template parameters for customer confirmation
+      const autoReplyParams = {
+        to_name: formData.name,
+        to_email: formData.email,
+        customer_name: formData.name,
+        interest: formData.interest,
+        message: formData.message,
+        company_name: "Increadz",
+        website_url: "https://increadz.com",
+        support_email: "contact@increadz.com",
+        current_date: new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+      };
+
+      // Send main contact email to your business
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      console.log("Main email sent successfully:", result.text);
+
+      // Send auto-reply confirmation to the customer
+      const autoReplyResult = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+        autoReplyParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      console.log("Auto-reply sent successfully:", autoReplyResult.text);
+
+      setSubmitStatus("success");
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        interest: "",
+        message: "",
+      });
+
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+    } catch (error) {
+      console.error("Email sending failed:", error);
+      setSubmitStatus("error");
+
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section
       className={`relative py-24 md:py-32 overflow-hidden transition-colors duration-500 ${
@@ -218,7 +401,7 @@ export default function Contact() {
 
           {/* --- RIGHT SIDE: Form --- */}
           <div className="lg:w-7/12">
-            <form className="flex flex-col gap-10">
+            <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
               {/* Name Input */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -229,19 +412,29 @@ export default function Contact() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   placeholder=" "
                   className={`peer w-full bg-transparent py-4 text-lg focus:outline-none focus:border-cyan-400 transition-colors border-b ${
-                    theme === "dark"
+                    errors.name
+                      ? "border-red-400"
+                      : theme === "dark"
                       ? "border-white/20 text-white"
                       : "border-gray-300 text-gray-900"
                   }`}
                 />
                 <label
                   htmlFor="name"
-                  className="absolute left-0 top-4 text-gray-500 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none"
+                  className={`absolute left-0 top-4 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none ${
+                    errors.name ? "text-red-400" : "text-gray-500"
+                  }`}
                 >
                   {t("yourName")}
                 </label>
+                {errors.name && (
+                  <p className="text-red-400 text-xs mt-1">{errors.name}</p>
+                )}
               </motion.div>
 
               {/* Email Input */}
@@ -254,19 +447,29 @@ export default function Contact() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   placeholder=" "
                   className={`peer w-full bg-transparent py-4 text-lg focus:outline-none focus:border-cyan-400 transition-colors border-b ${
-                    theme === "dark"
+                    errors.email
+                      ? "border-red-400"
+                      : theme === "dark"
                       ? "border-white/20 text-white"
                       : "border-gray-300 text-gray-900"
                   }`}
                 />
                 <label
                   htmlFor="email"
-                  className="absolute left-0 top-4 text-gray-500 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none"
+                  className={`absolute left-0 top-4 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none ${
+                    errors.email ? "text-red-400" : "text-gray-500"
+                  }`}
                 >
                   {t("emailAddress")}
                 </label>
+                {errors.email && (
+                  <p className="text-red-400 text-xs mt-1">{errors.email}</p>
+                )}
               </motion.div>
 
               {/* Interest Select (Custom Look) */}
@@ -275,7 +478,15 @@ export default function Contact() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                <CustomSelect theme={theme} t={t} />
+                <CustomSelect
+                  theme={theme}
+                  t={t}
+                  value={formData.interest}
+                  onChange={handleSelectChange}
+                />
+                {errors.interest && (
+                  <p className="text-red-400 text-xs mt-1">{errors.interest}</p>
+                )}
               </motion.div>
 
               {/* Message Input */}
@@ -287,20 +498,36 @@ export default function Contact() {
               >
                 <textarea
                   id="message"
-                  rows="1"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows="5"
                   placeholder=" "
+                  style={{ minHeight: "120px" }}
                   className={`peer w-full bg-transparent py-4 text-lg focus:outline-none focus:border-cyan-400 transition-colors resize-none border-b ${
-                    theme === "dark"
+                    errors.message
+                      ? "border-red-400"
+                      : theme === "dark"
                       ? "border-white/20 text-white"
                       : "border-gray-300 text-gray-900"
                   }`}
+                  onInput={(e) => {
+                    e.target.style.height = "auto";
+                    e.target.style.height =
+                      Math.max(e.target.scrollHeight, 120) + "px";
+                  }}
                 ></textarea>
                 <label
                   htmlFor="message"
-                  className="absolute left-0 top-4 text-gray-500 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none"
+                  className={`absolute left-0 top-4 text-base transition-all duration-300 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-cyan-400 peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-gray-400 pointer-events-none ${
+                    errors.message ? "text-red-400" : "text-gray-500"
+                  }`}
                 >
                   {t("message")}
                 </label>
+                {errors.message && (
+                  <p className="text-red-400 text-xs mt-1">{errors.message}</p>
+                )}
               </motion.div>
 
               {/* Submit Button */}
@@ -310,10 +537,73 @@ export default function Contact() {
                 transition={{ duration: 0.6, delay: 0.7 }}
                 className="pt-4"
               >
-                <AnimatedButton
-                  text={t("sendNow")}
-                  className="bg-white text-black hover:bg-cyan-400 border-none"
-                />
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`
+                    relative group overflow-hidden rounded-full
+                    px-8 py-3 font-medium text-lg w-full md:w-auto
+                    transition-all duration-500
+                    hover:scale-105 active:scale-95
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    ${
+                      theme === "dark"
+                        ? "bg-white text-black"
+                        : "bg-gray-900 text-white"
+                    }
+                  `}
+                >
+                  <span
+                    className="
+                      absolute left-1/2 top-1/2
+                      -translate-x-1/2 -translate-y-1/2
+                      bg-cyan-400 rounded-full
+                      w-0 h-0
+                      transition-all duration-500 ease-in-out
+                      group-hover:w-96 group-hover:h-96
+                    "
+                  ></span>
+
+                  <div className="relative z-10 flex items-center justify-center gap-3">
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                        <span>{t("sending") || "Sending..."}</span>
+                      </>
+                    ) : (
+                      <span>{t("sendNow")}</span>
+                    )}
+                  </div>
+                </button>
+
+                {/* Status Messages */}
+                <AnimatePresence>
+                  {submitStatus === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl"
+                    >
+                      <p className="text-green-400 text-sm text-center">
+                        {t("messageSent")}
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {submitStatus === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl"
+                    >
+                      <p className="text-red-400 text-sm text-center">
+                        {t("messageFailed")}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             </form>
           </div>
