@@ -22,11 +22,11 @@ export default function HeroButton({ text = "Let's Contact" }) {
   const { theme } = useTheme();
 
   const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
+    const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+        behavior: "smooth",
+        block: "start",
       });
     }
   };
@@ -74,9 +74,11 @@ export default function HeroButton({ text = "Let's Contact" }) {
         </div>
 
         {/* Arrow Icon: Rotates 45deg on hover */}
-        <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 ${
-          theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-        }`}>
+        <div
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-500 group-hover:rotate-45 ${
+            theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+          }`}
+        >
           <ArrowRight />
         </div>
       </div>

@@ -8,11 +8,11 @@ export default function AnimatedButton({
   const { theme } = useTheme();
 
   const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
+    const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+        behavior: "smooth",
+        block: "start",
       });
     }
   };
@@ -25,9 +25,10 @@ export default function AnimatedButton({
         px-6 py-2.5 font-medium
         transition-colors duration-500
         hover:border-transparent
-        ${theme === "dark"
-          ? "border border-white/20 bg-white/5 text-white"
-          : "border border-gray-300 bg-gray-100 text-gray-900"
+        ${
+          theme === "dark"
+            ? "border border-white/20 bg-white/5 text-white"
+            : "border border-gray-300 bg-gray-100 text-gray-900"
         }
         ${className}
       `}
