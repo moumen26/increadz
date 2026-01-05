@@ -98,7 +98,11 @@ const ProjectCard = ({ project, theme }) => {
         >
           {project.category}
         </span>
-        <h3 className="text-xl md:text-3xl font-bold text-white drop-shadow-md">
+        <h3
+          className={`text-xl md:text-3xl font-bold drop-shadow-md ${
+            theme === "dark" ? "text-white" : "text-gray-900"
+          }`}
+        >
           {project.title}
         </h3>
       </div>
