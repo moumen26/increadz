@@ -7,8 +7,19 @@ export default function AnimatedButton({
 }) {
   const { theme } = useTheme();
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <button
+      onClick={scrollToContact}
       className={`
         relative group overflow-hidden rounded-full
         px-6 py-2.5 font-medium

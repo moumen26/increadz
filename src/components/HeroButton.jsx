@@ -21,8 +21,19 @@ const ArrowRight = () => (
 export default function HeroButton({ text = "Let's Contact" }) {
   const { theme } = useTheme();
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <button
+      onClick={scrollToContact}
       className={`
         relative group
         flex items-center gap-3
